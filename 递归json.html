@@ -41,35 +41,53 @@
 		    size: '111111m222'
 		  }]
 		}];
-		
-		function returnNew(o) {
-		  let newP = {};
-		  let children = o.children;
-		  Object.keys(o).map(function (item) {
-		    if (item !== 'children') {
-		      newP[item] = o[item]
-		    }
-		  });
-		  return {
-		    data: newP,
-		    children
-		  };
+		//方法1
+//		function returnNew(o) {
+//		  let newP = {};
+//		  let children = o.children;
+//		  Object.keys(o).map(function (item) {
+//		    if (item !== 'children') {
+//		      newP[item] = o[item]
+//		    }
+//		  });
+//		  return {
+//		    data: newP,
+//		    children
+//		  };
+//		};
+//		
+//		function arrMap(item) {
+//		  var ojsonNew = [];
+//		  item.map(function (i) {
+//		    //var newData;
+//		    if (i.children) {
+//		      i.children = arrMap(i.children)
+//		    };
+//		    let p = returnNew(i);
+//		    ojsonNew.push(p)
+//		  })
+//		  return ojsonNew
+//		};
+//		
+//		console.log(arrMap(ojson));
+		//方法2
+		var jsonFn = function(arr){
+			arr.map(item=>{
+				var data = {};
+				for(var key in item){
+					if(key!=='children'){
+						data[key]=item[key]
+						delete item[key]
+					}
+				}
+				item.data=data;
+				if(item.children&&item.children.length){
+					jsonFn(item.children)
+				}
+			})
 		};
-		
-		function arrMap(item) {
-		  var ojsonNew = [];
-		  item.map(function (i) {
-		    //var newData;
-		    if (i.children) {
-		      i.children = arrMap(i.children)
-		    };
-		    let p = returnNew(i);
-		    ojsonNew.push(p)
-		  })
-		  return ojsonNew
-		};
-		
-		console.log(arrMap(ojson));
+		jsonFn(ojson)
+		console.log(ojson)
 
 	</script>
 </html>
