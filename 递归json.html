@@ -7,87 +7,57 @@
 	<body>
 	</body>
 	<script>
-		var ojson = [{
-		  id: 1,
-		  children: []
-		}, {
-		  id: 2,
-		  children: []
-		}, {
-		  id: 3,
-		  children: [{
-		    name: 'miao',
-		    size: 'm',
-		    children: [{
-		      type: 2,
-		      children: [{
-		        sex: '女'
-		      }]
-		    }]
-		  }, {
-		    name: 'miao111',
-		    size: 'm111'
-		  }]
-		}, {
-		  id: 4,
-		  children: [{
-		    name: '11111miao',
-		    size: '11111m'
-		  }, {
-		    name: '111111miao111',
-		    size: '111111m111'
-		  }, {
-		    name: '111111miao222',
-		    size: '111111m222'
-		  }]
-		}];
-		//方法1
-//		function returnNew(o) {
-//		  let newP = {};
-//		  let children = o.children;
-//		  Object.keys(o).map(function (item) {
-//		    if (item !== 'children') {
-//		      newP[item] = o[item]
-//		    }
-//		  });
-//		  return {
-//		    data: newP,
-//		    children
-//		  };
-//		};
-//		
-//		function arrMap(item) {
-//		  var ojsonNew = [];
-//		  item.map(function (i) {
-//		    //var newData;
-//		    if (i.children) {
-//		      i.children = arrMap(i.children)
-//		    };
-//		    let p = returnNew(i);
-//		    ojsonNew.push(p)
-//		  })
-//		  return ojsonNew
-//		};
-//		
-//		console.log(arrMap(ojson));
+		var ojson = [
+			{
+				allchild:[
+					{
+						allchild:[
+							
+						],
+						id:'1'
+					}
+				],
+				id:'1'
+			},
+			{
+				allchild:[
+					{
+						allchild:[
+							
+						],
+						id:'1'
+					}
+				],
+				id:'1'
+			},
+			{
+				allchild:[
+					
+				],
+				id:'1'
+			}
+		];
 		//方法2
 		var jsonFn = function(arr){
 			arr.map(item=>{
 				var data = {};
-				for(var key in item){
+				for(let key in item){
+					if(key=='allchild'){
+						item.children=item[key]
+						if(item.allchild&&item.allchild.length){
+							jsonFn(item.allchild)
+						}
+						delete item[key]
+					}
 					if(key!=='children'){
 						data[key]=item[key]
 						delete item[key]
 					}
 				}
 				item.data=data;
-				if(item.children&&item.children.length){
-					jsonFn(item.children)
-				}
 			})
 		};
 		jsonFn(ojson)
 		console.log(ojson)
-
 	</script>
 </html>
