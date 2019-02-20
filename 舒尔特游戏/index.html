@@ -1,0 +1,99 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>
+    舒尔特方格
+  </title>
+  <link rel="Stylesheet" href="index.css" />
+  <script
+    language="javascript"
+    type="text/javascript"
+    src="jquery-1.8.3.min.js"
+  ></script>
+
+  <script language="javascript" type="text/javascript" src="index.js"></script>
+  <style type="text/css" media="print">
+    .m-form {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="agin">
+    <img src="img/agin.png" />
+    <div>重新开始</div>
+  </div>
+  <div class="start">
+    <img src="img/Bitmap.png" />
+    <div class="text">
+      <div class="title">舒尔特</div>
+      <div class="text">最简单高效的专注力练习</div>
+      <div class="startB"></div>
+    </div>
+  </div>
+  <div class="m-form">
+    <form name="" action="#" method="get">
+      <fieldset>
+        <legend>
+          舒尔特方格 设置
+        </legend>
+        <div>
+          <label>
+            方格个数
+            <input id="size" value="5" />
+            个
+          </label>
+        </div>
+        <div style="display: none;">
+          <label>
+            表格个数
+            <input id="count" value="1" />
+            个，
+          </label>
+          <label>
+            每行
+            <input id="col" value="1" />
+            个
+          </label>
+        </div>
+        <div>
+          <label>
+            方格大小
+            <input id="table_size" value="570" />
+            px，
+          </label>
+          <label>
+            字体大小
+            <input id="font_size" value="21" />
+            px
+          </label>
+        </div>
+        <div>
+          <label>
+            左右间距
+            <input id="margin_left" value="60" />
+            px，
+          </label>
+          <label>
+            上下间距
+            <input id="margin_top" value="130" />
+            px
+          </label>
+        </div>
+        <div>
+          <button type="button" onclick="create()">
+            生成
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="time">
+    <span id="hour">00</span>时<span id="minute">00</span>分<span id="second"
+      >00</span
+    >秒
+  </div>
+  <div id="shuerte"></div>
+</body>

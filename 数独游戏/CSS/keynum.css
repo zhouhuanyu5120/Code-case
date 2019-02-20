@@ -1,0 +1,100 @@
+.keyNum {
+  width: 100%;
+  height: 200px;
+  /* background: red; */
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.agin {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  display: flex;
+  font-size: 30px;
+  color: #b86d27;
+}
+
+.agin>img {
+  width: 30px;
+  height: 30px;
+  padding-top: 6px;
+}
+
+.num {
+  width: 55px;
+  height: 55px;
+  border: 3px solid #e2ad6c;
+  text-align: center;
+  line-height: 55px;
+  font-size: 30px;
+  background: #e7b777;
+  color: #b76a28;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.clear {
+  width: 55px;
+  height: 55px;
+  border: 3px solid #f58f25;
+  text-align: center;
+  line-height: 55px;
+  font-size: 25px;
+  color: #b76a28;
+  background: #f58f23;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.num:active {
+  background: #f6f3e2;
+}
+
+.start {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background: #f6f3e2;
+}
+
+.start>img {
+  height: 800px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.start>.text {
+  width: 40%;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 10%;
+}
+
+.start>.text>.title {
+  height: 150px;
+  font-size: 60px;
+  color: #6480ff;
+  text-align: center;
+  background: url(../IMG/3.png) no-repeat;
+  background-size: 100% 100%;
+}
+
+
+.start>.text>.startB {
+  width: 65%;
+  height: 100px;
+  background: url(../IMG/4.png) no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+}
