@@ -239,6 +239,7 @@ function check(o) {
         border: '3px solid #a00'
       }
     });
+    alert('恭喜您通关');
     $('#timer').stopTime();
   }
   $('#lefts').text('LeftSquares：' + blockscount + '');
