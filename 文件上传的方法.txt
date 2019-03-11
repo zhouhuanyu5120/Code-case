@@ -1,0 +1,14 @@
+fileup(el) {
+      //获取文件流
+      this.file = el.target.files[0]
+      //new一个formdata
+      var form = new FormData()
+      //添加文件流
+      form.append('file', el.target.files[0])
+      //上传文件流
+      api.fileup(form).then(res => {
+         
+        this.fileid = res.data.d.id
+        this.filecomplete = true
+      })
+    }
