@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奇想国童书</title>
+  <meta name="description" itemprop="description" content="隔离阅读！不隔离不阅读">
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+  <link rel="apple-touch-icon" href="//cdn1.zhizhucms.com/book/327934/icon/80ce90af6d4a1479c54c1b3166116d32_origin.png">
+  <link rel="apple-touch-startup-image"
+    href="//cdn1.zhizhucms.com/book/327934/icon/80ce90af6d4a1479c54c1b3166116d32_origin.png">
+  <script src="./js/jquery-1.8.3.min.js"></script>
+  <script src="./js/html2canvas.min.js"></script>
+  <script src="./js/html2canvas.js"></script>
+  <script src="./js/exif.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-decoration: none;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow-x: hidden;
+      /* overflow: hidden; */
+    }
+
+    html {
+      font-size: 13.33vw
+    }
+
+    .bg {
+      width: 100%;
+      height: 13rem;
+      background: url('./img/BG.png');
+      background-size: 100% 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+    }
+
+
+    .bg>img {
+      width: 100%;
+      /* position: relative; */
+      /* left: 0; */
+      /* top: 0; */
+    }
+
+    .fileup {
+      width: 100%;
+      height: 13rem;
+      background: url('./img/fileup.png');
+      background-size: 100% 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    /* 
+    .fileup>img {
+      width: 100%;
+      position: relative;
+      left: 0;
+      top: 0;
+    } */
+
+    #fileupImg {
+      width: 7.1rem;
+      /* height: 10rem; */
+      position: absolute;
+      top: 7.3rem;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* transform: translate(-50%, -50%) rotate(90deg); */
+      display: none;
+    }
+
+    .fileupImg {
+      width: 100%;
+      /* height: 10rem; */
+      position: absolute;
+      top: 7.3rem;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* transform: translate(-50%, -50%) rotate(90deg); */
+      /* display: none; */
+      opacity: 0;
+      /* z-index: 100; */
+    }
+
+    #file {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #imgH {
+      width: 100%;
+      height: 13rem;
+      position: relative;
+      /* position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); */
+    }
+
+    .zzc {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.9;
+      background: #000;
+      z-index: 101;
+      display: none;
+      text-align: center;
+      line-height: 13rem;
+    }
+
+    .zzc>img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.3);
+      display: none;
+      transition: all 0.6s ease;
+    }
+
+    .bg1 {
+      width: 100%;
+      height: 13rem;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .imgbox {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: none;
+      z-index: 200;
+    }
+
+    .imgbox>.text {
+      width: 100%;
+      margin-top: -1rem;
+      text-align: center;
+      font-size: 0.4rem;
+      color: #fff;
+    }
+
+    .startLoad {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 200;
+      transition: all 1s ease;
+    }
+
+    .startLoad>.loadBg {
+      width: 2rem;
+      height: 0.2rem;
+      background: #fff;
+      border-radius: 0.2rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transition: all 0.2s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .startLoad>.loadBg>.loadLine {
+      width: 0rem;
+      height: 0.2rem;
+      background: #E6A23C;
+      border-radius: 0.2rem;
+      transition: all 1s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="startLoad">
+    <div class="loadBg">
+      <div class="loadLine"></div>
+    </div>
+  </div>
+  <div class="zzc">
+    <img src="./img/ziyuan.png" class="upload">
+    <img src="./img/tucengzhizuoyuweihu.png" class="create">
+  </div>
+  <img src="./img/bg1.png" class="bg1">
+  <img src="./img/bg1.png" class="bg1" style="bottom:1.2rem;">
+  <img src="./img/bg1.png" class="bg1" style="top:0;">
+  <div class="margin"></div>
+  <div id="imgH">
+    <div class="bg">
+      <img src="./img/BG.png" class="upload">
+      <input type="file" id="file" accept="image/*">
+    </div>
+    <div class="fileup">
+      <!-- <img src="./img/fileup.png" class="upload"> -->
+    </div>
+    <div id="fileupImg">
+    </div>
+    <img src="" class="fileupImg">
+  </div>
+  <div class="canvasImagesd"
+    style="margin: 0 auto;width: 300px;height: 400px;position: fixed;z-index: 9999;background-color: #ededed;display: none;">
+    <canvas id="canvas"></canvas>
+  </div>
+  <div class="imgbox">
+    <img id="img" style="display:block; margin: 0 auto;transform: scale(0.8);" src="#" alt="...">
+    <div class="text">长按保存图片，发送至朋友圈</div>
+  </div>
+</body>
+<script>
+  $(() => {
+    var api = 'http://restful.englishto.cn/bg/com/upload/file'
+    var rec = 'http://static.englishto.cn/'
+    var bodyHeight = $('body').height()
+    var imgHheight = $('#imgH').height()
+    var marginTop = bodyHeight - imgHheight
+    var u = navigator.userAgent;
+    //Android终端
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+    //iOS终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    // if (isAndroid) {
+    //   $("#fileupImg").css('transform', 'translate(-50%, -50%) rotate(90deg)')
+    // }
+    // if (isiOS) {
+    //   $("#fileupImg").css('transform', 'translate(-50%, -50%)')
+    // }
+    if (bodyHeight < imgHheight) {
+      $('.zzc,.imgbox,.startLoad').css('height', imgHheight + 'px')
+    }
+
+    // 使IMGH一只居中
+    $('.margin').css('padding-top', marginTop / 2 + 'px')
+    // $('.zzc,.imgbox').css('height', bodyHeight + 'px')
+
+    // 开场加载动画
+    $('.loadLine').css('width', '2rem')
+    setTimeout(() => {
+      $('.startLoad').css('opacity', '0')
+      setTimeout(() => {
+        $('.startLoad').hide()
+      }, 1100);
+    }, 1100);
+    //获取照片的元信息（拍摄方向）
+    function getPhotoOrientation(file) {
+      // var orient = 1;
+      EXIF.getData(file, function () {
+        // alert(EXIF.pretty(this));
+        EXIF.getAllTags(this);
+        //alert(EXIF.getTag(this, 'Orientation'));
+        // alert(EXIF.getTag(this, 'Orientation'))
+        var width = $('.fileupImg').width()
+        var height = $('.fileupImg').height()
+        orient = EXIF.getTag(this, 'Orientation');
+        if (EXIF.getTag(this, 'Orientation') == 6) {
+          $(".fileupImg").css('transform', 'translate(-50%, -50%) rotate(90deg)')
+          if (isAndroid) {
+            $(".fileupImg").css('width', 'auto')
+            $(".fileupImg").css('height', '7.1rem')
+          }
+          if (isiOS) {
+            $(".fileupImg").css('width', '7.1rem')
+            $(".fileupImg").css('height', 'auto')
+          }
+          $("#fileupImg").css('transform', 'translate(-50%, -50%) rotate(90deg)')
+          var width = $('.fileupImg').width()
+          var height = $('.fileupImg').height()
+          if (isAndroid) {
+            $("#fileupImg").css('width', width + 'px')
+            $("#fileupImg").css('height', height + 'px')
+          }
+          if (isiOS) {
+            $("#fileupImg").css('width', height + 'px')
+            $("#fileupImg").css('height', width + 'px')
+          }
+
+        } else if (EXIF.getTag(this, 'Orientation') == 8) {
+          $(".fileupImg").css('transform', 'translate(-50%, -50%) rotate(-90deg)')
+          if (isAndroid) {
+            $(".fileupImg").css('width', 'auto')
+            $(".fileupImg").css('height', '7.1rem')
+          }
+          if (isiOS) {
+            $(".fileupImg").css('width', '7.1rem')
+            $(".fileupImg").css('height', 'auto')
+          }
+          $("#fileupImg").css('transform', 'translate(-50%, -50%) rotate(-90deg)')
+          var width = $('.fileupImg').width()
+          var height = $('.fileupImg').height()
+          if (isAndroid) {
+            $("#fileupImg").css('width', width + 'px')
+            $("#fileupImg").css('height', height + 'px')
+          }
+          if (isiOS) {
+            $("#fileupImg").css('width', height + 'px')
+            $("#fileupImg").css('height', width + 'px')
+          }
+        } else {
+          var height = $('.fileupImg').height()
+          $("#fileupImg").css('height', height + 'px')
+        }
+
+        $('.zzc').hide()
+        $('.zzc').find('.upload').hide()
+        draw()
+        //return;
+      });
+      // return orient;
+    }
+    // ios获取文件上传返回路径使用
+    function uploadFile(el) {
+      var upload = setInterval(() => {
+        $('.zzc').find('.upload').css('transform', 'translate(-50%, -50%) scale(0.5)')
+        setTimeout(() => {
+          $('.zzc').find('.upload').css('transform', 'translate(-50%, -50%) scale(0.3)')
+        }, 100);
+      }, 300);
+      console.log(el.target.files[0])
+      var form = new FormData()
+      form.append('file', el.target.files[0])
+      console.log(form)
+      $.ajax({
+        type: "POST",
+        url: api,
+        data: form,
+        dataType: "json",
+        async: false,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+          console.log(rec + res.d.fileURL)
+          $('.fileupImg').attr("src", rec + res.d.fileURL);
+          $('#fileupImg').css("background", 'url(' + rec + res.d.fileURL + ')');
+          $('#fileupImg').css("background-size", '100% 100%');
+          $('#fileupImg').show()
+          $('.fileupImg').load(function () {
+            setTimeout(() => {
+              clearInterval(upload)
+              var orient = getPhotoOrientation(el.target.files[0]);
+              // $('.zzc').hide()
+              // $('.zzc').find('.upload').hide()
+              // draw(rec + res.d.fileURL)
+            }, 3500)
+          });
+        }
+      });
+    }
+    // 安卓获取文件
+    function androidFile(el) {
+      var upload = setInterval(() => {
+        $('.zzc').find('.upload').css('transform', 'translate(-50%, -50%) scale(0.5)')
+        setTimeout(() => {
+          $('.zzc').find('.upload').css('transform', 'translate(-50%, -50%) scale(0.3)')
+        }, 100);
+      }, 300);
+      console.log(el)
+      var reader;
+      var _this = el;
+      if (window.FileReader) {
+        reader = new FileReader();
+      } else {
+        alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+      }
+      var file = el.target.files[0];
+      var imageType = /^image\//;
+      //是否是图片
+      if (!imageType.test(file.type)) {
+        alert("请选择图片！");
+        return;
+      }
+      //读取完成
+      reader.onload = function (e) {
+        console.log(e.target.result)
+        $('.fileupImg').attr("src", e.target.result);
+        //图片路径设置为读取的图片
+        $('#fileupImg').css("background", 'url(' + e.target.result + ')');
+        $('#fileupImg').css("background-size", '100% 100%');
+        // $('.fileupImg').attr("src", e.target.result);
+        $('#fileupImg').show()
+        $('.fileupImg').load(function () {
+          setTimeout(() => {
+            clearInterval(upload)
+            var orient = getPhotoOrientation(file);
+            // $('.zzc').hide()
+            // $('.zzc').find('.upload').hide()
+            // draw()
+          }, 1000)
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+    // 上传文件
+    $('#file').change((el) => {
+      $('.zzc').show()
+      $('.zzc').find('.upload').show()
+      if (isAndroid) {
+        // 安卓走本地
+        androidFile(el)
+      }
+      if (isiOS) {
+        // ios走接口，不然生产的图片没有自己的照片
+        uploadFile(el)
+      }
+    })
+    // 获取屏幕比例
+    function getDpr() {
+      if (window.devicePixelRatio && window.devicePixelRatio > 1) {
+        return window.devicePixelRatio;
+      }
+      return 1;
+    }
+    // 画图生成
+    function draw() {
+      $('.zzc').show()
+      $('.zzc').find('.create').show()
+      var create = setInterval(() => {
+        $('.zzc').find('.create').css('transform', 'translate(-50%, -50%) scale(0.5)')
+        setTimeout(() => {
+          $('.zzc').find('.create').css('transform', 'translate(-50%, -50%) scale(0.3)')
+        }, 100);
+      }, 300);
+      var w = $("#imgH").width();
+      var h = $("#imgH").height();
+      console.log(w, h)
+      var scaleBy = getDpr();
+      //要将 canvas 的宽高设置成容器宽高的 2 倍
+      var canvas = document.createElement("canvas");
+      canvas.width = w * (scaleBy * scaleBy);
+      canvas.height = h * (scaleBy * scaleBy);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      var context = canvas.getContext("2d");
+      //然后将画布缩放，将图像放大两倍画到画布上
+      context.scale(scaleBy, scaleBy);
+      console.log(w, h)
+      console.log(scaleBy)
+      html2canvas(document.querySelector("#imgH"), {
+        // background: "#fff",
+        // useCORS: true,
+        // allowTaint: true,
+        // width: w,
+        // height: h,
+        // canvas: canvas,
+        scale: scaleBy,
+        // dpi: 10
+      }).then(canvas => {
+        $('.zzc').hide()
+        $('.zzc').find('.create').hide()
+        clearInterval(create)
+        // context.mozImageSmoothingEnabled = false;
+        // context.webkitImageSmoothingEnabled = false;
+        // context.msImageSmoothingEnabled = false;
+        // context.imageSmoothingEnabled = false;
+        var url = canvas.toDataURL("image/png", 1); // base64数据
+        // var img = new newImage()
+        // img.src = canvas.toDataURL("image/png", 1);
+        // if (isAndroid) {
+        //   dealImage(url, 1000, setImgUrl)
+        // }
+        // if (isiOS) {
+        $('.imgbox').show()
+        $('#img').css({ 'width': '100%', 'height': '13rem' }).attr('src', url);
+        // }
+      });
+    }
+    // 安卓获取生成的图片
+    function setImgUrl(params) {
+      $('.imgbox').show()
+      $('#img').css({ 'width': '100%', 'height': '13rem' }).attr('src', params);
+      console.log(params.length);
+    }
+    // base64转换，否则安卓端反应慢
+    function dealImage(base64, w, callback) {
+      var newImage = new Image();
+      var quality = 0.6;    //压缩系数0-1之间
+      newImage.src = base64;
+      newImage.setAttribute("crossOrigin", 'Anonymous');	//url为外域时需要
+      var imgWidth, imgHeight;
+      newImage.onload = function () {
+        imgWidth = this.width;
+        imgHeight = this.height;
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        if (Math.max(imgWidth, imgHeight) > w) {
+          if (imgWidth > imgHeight) {
+            canvas.width = w;
+            canvas.height = w * imgHeight / imgWidth;
+          } else {
+            canvas.height = w;
+            canvas.width = w * imgWidth / imgHeight;
+          }
+        } else {
+          canvas.width = imgWidth;
+          canvas.height = imgHeight;
+          quality = 0.6;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+        var base64 = canvas.toDataURL("image/jpeg", quality); //压缩语句
+        // 如想确保图片压缩到自己想要的尺寸,如要求在50-150kb之间，请加以下语句，quality初始值根据情况自定
+        while (base64.length / 1024 > 150) {
+          quality -= 0.01;
+          base64 = canvas.toDataURL("image/jpeg", quality);
+        }
+        // 防止最后一次压缩低于最低尺寸，只要quality递减合理，无需考虑
+        while (base64.length / 1024 < 50) {
+          quality += 0.001;
+          base64 = canvas.toDataURL("image/jpeg", quality);
+        }
+        callback(base64);//必须通过回调函数返回，否则无法及时拿到该值
+      }
+    }
+  })
+</script>
+
+</html>
